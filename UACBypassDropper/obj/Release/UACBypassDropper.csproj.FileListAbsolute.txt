@@ -1,0 +1,12 @@
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\obj\Release\UACBypassDropper.csproj.AssemblyReference.cache
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\obj\Release\UACBypassDropper.csproj.CoreCompileInputs.cache
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\bin\Release\UACBypassDropper.exe.config
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\bin\Release\UACBypassDropper.exe
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\bin\Release\UACBypassDropper.pdb
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\bin\Release\Microsoft.WindowsAPICodePack.xml
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\obj\Release\UACBypas.07B2761D.Up2Date
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\obj\Release\UACBypassDropper.exe
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\obj\Release\UACBypassDropper.pdb
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\bin\Release\FodyHelpers.xml
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\obj\Release\UACBypassDropper.csproj.Fody.CopyLocal.cache
+C:\Users\miles\source\repos\UACBypassDropper\UACBypassDropper\obj\Release\UACBypassDropper.csproj.Fody.RuntimeCopyLocal.cache

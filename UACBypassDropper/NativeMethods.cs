@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using System;
+﻿using System;
+using System.Runtime.InteropServices;
 
 internal class NativeMethods
 {
@@ -10,6 +10,7 @@ internal class NativeMethods
     public const uint FOF_NOERRORUI = 0x0400;
     public const uint FOFX_NOCOPYHOOKS = 0x00000080;
     public const uint FOFX_REQUIREELEVATION = 0x00000100;
+
 
     [DllImport("ole32.dll")]
     public static extern int CoInitializeEx(IntPtr pvReserved, int dwCoInit);
@@ -38,13 +39,29 @@ internal class NativeMethods
 
     public static dynamic CreateElevatedFileOperation()
     {
-        Type shellType = Type.GetTypeFromCLSID(new Guid("3AD05575-8857-4850-9277-11B85BDB8E09"));
-        return Activator.CreateInstance(shellType);
+        try
+        {
+            Type shellType = Type.GetTypeFromCLSID(new Guid("3AD05575-8857-4850-9277-11B85BDB8E09"));
+            return Activator.CreateInstance(shellType);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error creating Elevated File Operation COM object: " + ex.Message);
+            return null;
+        }
     }
 
     public static dynamic CreateShellItemFromPath(string path)
     {
-        Type shellItemType = Type.GetTypeFromCLSID(new Guid("43826D1E-E718-42EE-BC55-A1E261C37BFE"));
-        return Activator.CreateInstance(shellItemType, path);
+        try
+        {
+            Type shellItemType = Type.GetTypeFromCLSID(new Guid("43826D1E-E718-42EE-BC55-A1E261C37BFE"));
+            return Activator.CreateInstance(shellItemType, path);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error creating Shell Item from path: " + ex.Message);
+            return null;
+        }
     }
 }

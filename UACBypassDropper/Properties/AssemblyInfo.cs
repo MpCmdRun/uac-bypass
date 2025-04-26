@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using Microsoft.CSharp.RuntimeBinder;
 
 [assembly: AssemblyTitle("UACBypassDropper")]
 [assembly: AssemblyDescription("Unsafe UAC Bypass Dropper")]
