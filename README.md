@@ -35,7 +35,7 @@ This code is intended for **educational** and **research** purposes only.
 
 ## 👤 Credits
 - [0x0000000A](https://github.com/MpCmdRun)
-- @omenist - Fixed 2 Large Errors.
+- [clout](https://t.me/omenist)
 
 ---
 
